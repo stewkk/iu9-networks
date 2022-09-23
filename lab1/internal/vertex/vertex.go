@@ -1,17 +1,17 @@
-package polygon
+package vertex
 
 type Vertex struct {
-	x, y int
+	X, Y int
 }
 
 type Vector Vertex
 
 func NewVector(s, e Vertex) Vector {
-	return Vector{e.x-s.x, e.y-s.y}
+	return Vector{e.X-s.X, e.Y-s.Y}
 }
 
 func AngleSign(a, b Vector) int {
-	return sgn(a.x*b.y - b.x*a.y)
+	return sgn(a.X*b.Y - b.X*a.Y)
 }
 
 func sgn(x int) int {

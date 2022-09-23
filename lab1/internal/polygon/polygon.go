@@ -1,60 +1,76 @@
 package polygon
 
 import (
-	"errors"
 	"fmt"
+
+	"github.com/stewkk/iu9-networks/lab1/internal/dynarray"
+	. "github.com/stewkk/iu9-networks/lab1/internal/vertex"
 )
 
 type Polygon struct {
-	vertices []Vertex
+	vertices    dynarray.Array
+	anglesSigns int
 }
 
 func NewPolygon(vertices []Vertex) Polygon {
-	return Polygon{vertices}
+	res := Polygon{
+		vertices:    vertices,
+		anglesSigns: 0,
+	}
+	res.countAngles()
+	return res
+}
+
+func (p *Polygon) countAngles() {
+	if len(p.vertices) < 3 {
+		return
+	}
+	it := newAngleIterator(p.vertices)
+	p.anglesSigns += it.sgn()
+	for it.hasNext() {
+		it.next()
+		p.anglesSigns += it.sgn()
+	}
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
 
 func (p Polygon) IsConvex() bool {
 	if len(p.vertices) < 3 {
 		return false
 	}
-	vCount := len(p.vertices)
-	v1 := NewVector(p.vertices[0], p.vertices[1])
-	v2 := NewVector(p.vertices[1], p.vertices[2])
-	PolygonAngleSign := AngleSign(v1, v2)
-	for i := 2; i < vCount; i++ {
-		v1 = v2
-		v2 = NewVector(p.vertices[i%vCount], p.vertices[(i+1)%vCount])
-		if PolygonAngleSign != AngleSign(v1, v2) {
-			return false
-		}
+	if len(p.vertices) == abs(p.anglesSigns) {
+		return true
 	}
-	return true
+	return false
 }
 
 func (p *Polygon) Remove(idx int) error {
-	if idx < 0 || idx >= len(p.vertices) {
-		return fmt.Errorf("polygon.Remove failed: %w", ErrOutOfBounds)
+	err := p.vertices.Remove(idx)
+	if err != nil {
+		return fmt.Errorf("polygon.Remove failed: %w", err)
 	}
-	p.vertices = append(p.vertices[:idx], p.vertices[idx+1:]...)
 	return nil
 }
 
 func (p *Polygon) Insert(idx int, v Vertex) error {
-	if idx < 0 || idx > len(p.vertices) {
-		return fmt.Errorf("polygon.Remove failed: %w", ErrOutOfBounds)
+	err := p.vertices.Insert(idx, v)
+	if err != nil {
+		return fmt.Errorf("polygon.Insert failed: %w", err)
 	}
-	p.vertices = append(p.vertices, Vertex{})
-	copy(p.vertices[idx+1:], p.vertices[idx:len(p.vertices)-1])
-	p.vertices[idx] = v
 	return nil
 }
 
 func (p *Polygon) Set(idx int, v Vertex) error {
-	if idx < 0 || idx >= len(p.vertices) {
-		return fmt.Errorf("polygon.Remove failed: %w", ErrOutOfBounds)
+	it, err := p.vertices.Iterator(idx)
+	if err != nil {
+		return fmt.Errorf("polygon.Set failed: %w", err)
 	}
-	p.vertices[idx] = v
+	*it.Vertex() = v
 	return nil
 }
-
-var ErrOutOfBounds = errors.New("index is out of bounds")
