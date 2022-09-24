@@ -1,114 +1,160 @@
 package polygon
 
 import (
-	"testing"
-
-	. "github.com/stewkk/iu9-networks/lab1/internal/vertex"
 	. "gopkg.in/check.v1"
 )
 
-// Hook up gocheck into the "go test" runner.
-func Test(t *testing.T) { TestingT(t) }
-
-type EmptyPolygon struct {
-	polygon Polygon
+type GetVertexSuite struct {
+	p Polygon
 }
 
-var _ = Suite(&EmptyPolygon{})
+var (
+	_ = Suite(&GetVertexSuite{})
+	_ = Suite(&InsertVertexSuite{})
+	_ = Suite(&DeleteVertexSuite{})
+	_ = Suite(&SetVertexSuite{})
+	_ = Suite(&PolygonSizeSuite{})
+	_ = Suite(&VertexIteratorSuite{})
+)
 
-func (s *EmptyPolygon) SetUpTest(c *C) {
-	s.polygon = NewPolygon([]Vertex{})
+func (s *GetVertexSuite) SetUpTest(c *C) {
+	s.p = NewPolygon([]Vertex{{1, 2}, {3, 4}})
 }
 
-func (s *EmptyPolygon) TestLessThanThreeVerticesAreNotConvex(c *C) {
-	c.Skip("not implemented")
-	c.Check(s.polygon.IsConvex(), Equals, false)
-	s.polygon.Insert(0, Vertex{X: 0, Y: 0})
-	c.Check(s.polygon.IsConvex(), Equals, false)
-	s.polygon.Insert(1, Vertex{X: 1, Y: 0})
-	c.Check(s.polygon.IsConvex(), Equals, false)
-	s.polygon.Insert(2, Vertex{X: 1, Y: 1})
-	c.Check(s.polygon.IsConvex(), Equals, true)
+func (s *GetVertexSuite) TestReturnsVertex(c *C) {
+	c.Assert(s.p.Vertex(0), Equals, Vertex{1, 2})
+	c.Assert(s.p.Vertex(1), Equals, Vertex{3, 4})
 }
 
-func (s *EmptyPolygon) TestInitializesWithListOfVertices(c *C) {
-	NewPolygon([]Vertex{{X: 1, Y: 2}, {X: 3, Y: 4}, {X: 5, Y: 6}})
+func (s *GetVertexSuite) TestVerticesReturnsListOfVertices(c *C) {
+	c.Assert(s.p.Vertices(), DeepEquals, []Vertex{{1, 2}, {3, 4}})
 }
 
-func (s *EmptyPolygon) TestSetOnEmptyReturnsError(c *C) {
-	c.Assert(s.polygon.Set(0, Vertex{}), ErrorMatches, ".*index is out of bounds.*")
+type InsertVertexSuite struct {
+	p Polygon
 }
 
-type Rectangle struct {
-	polygon Polygon
+func (s *InsertVertexSuite) SetUpTest(c *C) {
+	s.p = NewPolygon([]Vertex{{1, 2}})
 }
 
-var _ = Suite(&Rectangle{})
-
-func (s *Rectangle) SetUpTest(c *C) {
-	s.polygon = NewPolygon([]Vertex{{X: 0, Y: 0}, {X: 0, Y: 1}, {X: 2, Y: 1}, {X: 2, Y: 0}})
+func (s *InsertVertexSuite) TestInsertsOnIndex(c *C) {
+	s.p.Insert(0, Vertex{3, 4})
+	c.Assert(s.p.Vertex(0), Equals, Vertex{3, 4})
 }
 
-func (s *Rectangle) TestConvexClockwise(c *C) {
-	c.Assert(s.polygon.IsConvex(), Equals, true)
+func (s *InsertVertexSuite) TestAppend(c *C) {
+	s.p.Insert(1, Vertex{3, 4})
+	c.Assert(s.p.Vertex(1), Equals, Vertex{3, 4})
 }
 
-func (s *Rectangle) TestConvexCounterclockwise(c *C) {
-	s.polygon = NewPolygon([]Vertex{{X: 2, Y: 0}, {X: 2, Y: 1}, {X: 0, Y: 1}, {X: 0, Y: 0}})
-	c.Assert(s.polygon.IsConvex(), Equals, true)
+func (s *InsertVertexSuite) TestOutOfBoundsPanics(c *C) {
+	c.Assert(func() {
+		s.p.Insert(2, Vertex{1, 2})
+	}, PanicMatches, `.*`)
+	c.Assert(func() {
+		s.p.Insert(-1, Vertex{1, 2})
+	}, PanicMatches, `.*`)
 }
 
-func (s *Rectangle) TestRemoveVertex(c *C) {
-	c.Skip("not implemented")
-	s.polygon.Remove(0)
-	c.Assert(s.polygon.IsConvex(), Equals, true)
+type DeleteVertexSuite struct {
+	p Polygon
 }
 
-func (s *Rectangle) TestInsertVertexToBeConvex(c *C) {
-	c.Skip("not implemented")
-	s.polygon.Insert(2, Vertex{X: 1, Y: 2})
-	c.Assert(s.polygon.IsConvex(), Equals, true)
+func (s *DeleteVertexSuite) SetUpTest(c *C) {
+	s.p = NewPolygon([]Vertex{{1, 2}, {3, 4}})
 }
 
-func (s *Rectangle) TestInsertVertexToBeNonConvex(c *C) {
-	c.Skip("not implemented")
-	s.polygon.Insert(1, Vertex{X: -1, Y: 1})
-	c.Assert(s.polygon.IsConvex(), Equals, false)
+func (s *DeleteVertexSuite) TestDeletesVertex(c *C) {
+	s.p.Delete(0)
+	c.Assert(s.p.Vertices(), DeepEquals, []Vertex{{3, 4}})
 }
 
-func (s *Rectangle) TestMoveVertexToBeConvex(c *C) {
-	c.Skip("not implemented")
-	s.polygon.Set(0, Vertex{X: -1, Y: 0})
-	c.Assert(s.polygon.IsConvex(), Equals, true)
+func (s *DeleteVertexSuite) TestDoesNothingOnOutOfBounds(c *C) {
+	s.p.Delete(2)
+	s.p.Delete(-1)
+	c.Assert(s.p.Vertices(), DeepEquals, []Vertex{{1, 2}, {3, 4}})
 }
 
-func (s *Rectangle) TestMoveVertexToNonConvexState(c *C) {
-	c.Skip("not implemented")
-	s.polygon.Set(0, Vertex{X: 2, Y: 2})
-	c.Assert(s.polygon.IsConvex(), Equals, false)
+type SetVertexSuite struct {
+	p Polygon
 }
 
-func (s *Rectangle) TestInsertOnIndexGreaterThatCountOfVertices(c *C) {
-	c.Skip("not implemented")
-	c.Assert(s.polygon.Insert(5, Vertex{}), ErrorMatches, ".*index is out of bounds.*")
+func (s *SetVertexSuite) SetUpTest(c *C) {
+	s.p = NewPolygon([]Vertex{{1, 2}, {3, 4}})
 }
 
-func (s *Rectangle) TestInsertOnNegativeIndexReturnsError(c *C) {
-	c.Skip("not implemented")
-	c.Assert(s.polygon.Insert(-1, Vertex{}), ErrorMatches, ".*index is out of bounds.*")
+func (s *SetVertexSuite) TestSetVertex(c *C) {
+	s.p.Set(0, Vertex{3, 4})
+	c.Assert(s.p.Vertex(0), Equals, Vertex{3, 4})
 }
 
-func (s *Rectangle) TestSetOnIndexOutOfBoundsReturnsError(c *C) {
-	c.Skip("not implemented")
-	c.Assert(s.polygon.Set(-1, Vertex{}), ErrorMatches, ".*index is out of bounds.*")
+func (s *SetVertexSuite) TestOutOfBoundsPanics(c *C) {
+	c.Assert(func (){
+		s.p.Set(-1, Vertex{})
+	}, PanicMatches, `.*`)
 }
 
-func (s *Rectangle) TestRemoveOnNegativeIndexReturnsError(c *C) {
-	c.Skip("not implemented")
-	c.Assert(s.polygon.Remove(-1), ErrorMatches, ".*index is out of bounds.*")
+type PolygonSizeSuite struct {
+	p Polygon
 }
 
-func (s *Rectangle) TestRemoveOnIndexOutOfBoundsReturnsError(c *C) {
-	c.Skip("not implemented")
-	c.Assert(s.polygon.Remove(5), ErrorMatches, ".*index is out of bounds.*")
+func (s *PolygonSizeSuite) SetUpTest(c *C) {
+	s.p = NewPolygon([]Vertex{{1, 2}})
+}
+
+func (s *PolygonSizeSuite) TestEquals1(c *C) {
+	c.Assert(s.p.Size(), Equals, 1)
+}
+
+func (s *PolygonSizeSuite) TestChangesOnInsert(c *C) {
+	s.p.Insert(0, Vertex{})
+	c.Assert(s.p.Size(), Equals, 2)
+}
+
+func (s *PolygonSizeSuite) TestChangesOnDelete(c *C) {
+	s.p.Delete(0)
+	c.Assert(s.p.Size(), Equals, 0)
+}
+
+func (s *PolygonSizeSuite) TestNotChangesOnSet(c *C) {
+	s.p.Set(0, Vertex{})
+	c.Assert(s.p.Size(), Equals, 1)
+}
+
+type VertexIteratorSuite struct {
+	p Polygon
+}
+
+func (s *VertexIteratorSuite) SetUpTest(c *C) {
+	s.p = NewPolygon([]Vertex{{1, 2}, {3, 4}, {5, 6}})
+}
+
+func (s *VertexIteratorSuite) TestReturnsVertex(c *C) {
+	c.Assert(s.p.VertexIterator(0).Vertex(), Equals, Vertex{1, 2})
+	c.Assert(s.p.VertexIterator(2).Vertex(), Equals, Vertex{5, 6})
+}
+
+func (s *VertexIteratorSuite) TestIsLastReturnsFalseOnNonLastVertex(c *C) {
+	c.Assert(s.p.VertexIterator(0).IsLast(), Equals, false)
+}
+
+func (s *VertexIteratorSuite) TestIsLastReturnsTrueOnLastVertex(c *C) {
+	c.Assert(s.p.VertexIterator(s.p.Size()-1).IsLast(), Equals, true)
+}
+
+func (s *VertexIteratorSuite) TestNextReturnsIteratorToNextVertex(c *C) {
+	c.Assert(s.p.VertexIterator(0).Next().Vertex(), Equals, s.p.VertexIterator(1).Vertex())
+}
+
+func (s *VertexIteratorSuite) TestNextCyclesToFirstElementAfterLast(c *C) {
+	c.Assert(s.p.VertexIterator(s.p.Size()-1).Next().Vertex(), Equals, s.p.VertexIterator(0).Vertex())
+}
+
+func (s *VertexIteratorSuite) TestInitializesFromNegativeIndex(c *C) {
+	c.Assert(s.p.VertexIterator(-1).Vertex(), Equals, s.p.VertexIterator(s.p.Size()-1).Vertex())
+}
+
+func (s *VertexIteratorSuite) TestInitializesFromIndexGEThanSize(c *C) {
+	c.Assert(s.p.VertexIterator(s.p.Size()).Vertex(), Equals, s.p.VertexIterator(0).Vertex())
 }

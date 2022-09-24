@@ -1,76 +1,77 @@
 package polygon
 
-import (
-	"fmt"
-
-	"github.com/stewkk/iu9-networks/lab1/internal/dynarray"
-	. "github.com/stewkk/iu9-networks/lab1/internal/vertex"
-)
-
-type Polygon struct {
-	vertices    dynarray.Array
-	anglesSigns int
+type Polygon interface {
+	Vertex(idx int) Vertex
+	Vertices() []Vertex
+	Insert(idx int, v Vertex)
+	Size() int
+	Delete(idx int)
+	Set(idx int, v Vertex)
+	VertexIterator(idx int) CyclicVertexIterator
 }
 
 func NewPolygon(vertices []Vertex) Polygon {
-	res := Polygon{
-		vertices:    vertices,
-		anglesSigns: 0,
-	}
-	res.countAngles()
-	return res
+	return &polygon{vertices: vertices}
 }
 
-func (p *Polygon) countAngles() {
-	if len(p.vertices) < 3 {
+type polygon struct {
+	vertices []Vertex
+}
+
+func (p polygon) Vertex(idx int) Vertex {
+	return p.vertices[idx]
+}
+
+func (p *polygon) Insert(idx int, v Vertex) {
+	p.vertices = append(p.vertices, Vertex{})
+	copy(p.vertices[idx+1:], p.vertices[idx:])
+	p.vertices[idx] = v
+}
+
+func (p polygon) Size() int {
+	return len(p.vertices)
+}
+
+func (p polygon) Vertices() []Vertex {
+	return p.vertices
+}
+
+func (p *polygon) Delete(idx int) {
+	if idx < 0 || idx >= p.Size() {
 		return
 	}
-	it := newAngleIterator(p.vertices)
-	p.anglesSigns += it.sgn()
-	for it.hasNext() {
-		it.next()
-		p.anglesSigns += it.sgn()
+	copy(p.vertices[idx:], p.vertices[idx+1:])
+	p.vertices = p.vertices[:p.Size()-1]
+}
+
+func (p *polygon) Set(idx int, v Vertex) {
+	p.Delete(idx)
+	p.Insert(idx, v)
+}
+
+type cyclicVertexIterator struct {
+	p   polygon
+	idx int
+}
+
+func (p polygon) VertexIterator(idx int) CyclicVertexIterator {
+	return cyclicVertexIterator{
+		p:   p,
+		idx: (idx + p.Size()) % p.Size(),
 	}
 }
 
-func abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
+func (it cyclicVertexIterator) IsLast() bool {
+	return it.idx == it.p.Size()-1
 }
 
-func (p Polygon) IsConvex() bool {
-	if len(p.vertices) < 3 {
-		return false
+func (it cyclicVertexIterator) Next() CyclicVertexIterator {
+	return cyclicVertexIterator{
+		p:   it.p,
+		idx: (it.idx+1) % it.p.Size(),
 	}
-	if len(p.vertices) == abs(p.anglesSigns) {
-		return true
-	}
-	return false
 }
 
-func (p *Polygon) Remove(idx int) error {
-	err := p.vertices.Remove(idx)
-	if err != nil {
-		return fmt.Errorf("polygon.Remove failed: %w", err)
-	}
-	return nil
-}
-
-func (p *Polygon) Insert(idx int, v Vertex) error {
-	err := p.vertices.Insert(idx, v)
-	if err != nil {
-		return fmt.Errorf("polygon.Insert failed: %w", err)
-	}
-	return nil
-}
-
-func (p *Polygon) Set(idx int, v Vertex) error {
-	it, err := p.vertices.Iterator(idx)
-	if err != nil {
-		return fmt.Errorf("polygon.Set failed: %w", err)
-	}
-	*it.Vertex() = v
-	return nil
+func (it cyclicVertexIterator) Vertex() Vertex {
+	return it.p.vertices[it.idx]
 }
