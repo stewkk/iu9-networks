@@ -18,7 +18,7 @@ var (
 )
 
 func (s *GetVertexSuite) SetUpTest(c *C) {
-	s.p = NewPolygon([]Vertex{{1, 2}, {3, 4}})
+	s.p = NewSlicePolygon([]Vertex{{1, 2}, {3, 4}})
 }
 
 func (s *GetVertexSuite) TestReturnsVertex(c *C) {
@@ -35,7 +35,7 @@ type InsertVertexSuite struct {
 }
 
 func (s *InsertVertexSuite) SetUpTest(c *C) {
-	s.p = NewPolygon([]Vertex{{1, 2}})
+	s.p = NewSlicePolygon([]Vertex{{1, 2}})
 }
 
 func (s *InsertVertexSuite) TestInsertsOnIndex(c *C) {
@@ -62,7 +62,7 @@ type DeleteVertexSuite struct {
 }
 
 func (s *DeleteVertexSuite) SetUpTest(c *C) {
-	s.p = NewPolygon([]Vertex{{1, 2}, {3, 4}})
+	s.p = NewSlicePolygon([]Vertex{{1, 2}, {3, 4}})
 }
 
 func (s *DeleteVertexSuite) TestDeletesVertex(c *C) {
@@ -81,7 +81,7 @@ type SetVertexSuite struct {
 }
 
 func (s *SetVertexSuite) SetUpTest(c *C) {
-	s.p = NewPolygon([]Vertex{{1, 2}, {3, 4}})
+	s.p = NewSlicePolygon([]Vertex{{1, 2}, {3, 4}})
 }
 
 func (s *SetVertexSuite) TestSetVertex(c *C) {
@@ -100,7 +100,7 @@ type PolygonSizeSuite struct {
 }
 
 func (s *PolygonSizeSuite) SetUpTest(c *C) {
-	s.p = NewPolygon([]Vertex{{1, 2}})
+	s.p = NewSlicePolygon([]Vertex{{1, 2}})
 }
 
 func (s *PolygonSizeSuite) TestEquals1(c *C) {
@@ -127,7 +127,7 @@ type VertexIteratorSuite struct {
 }
 
 func (s *VertexIteratorSuite) SetUpTest(c *C) {
-	s.p = NewPolygon([]Vertex{{1, 2}, {3, 4}, {5, 6}})
+	s.p = NewSlicePolygon([]Vertex{{1, 2}, {3, 4}, {5, 6}})
 }
 
 func (s *VertexIteratorSuite) TestReturnsVertex(c *C) {

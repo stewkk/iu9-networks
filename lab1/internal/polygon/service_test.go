@@ -18,16 +18,16 @@ var (
 )
 
 func (s *PolygonConvexitySuite) TestEmptyPolygonIsNotConvex(c *C) {
-	p := NewService(NewPolygon([]Vertex{}))
+	p := NewService(NewSlicePolygon([]Vertex{}))
 	c.Assert(p.IsConvex(), Equals, false)
 }
 
 func (s *PolygonConvexitySuite) TestPolygonsWithOneOrTwoVerticesAreNotConvex(c *C) {
-	p := NewService(NewPolygon([]Vertex{
+	p := NewService(NewSlicePolygon([]Vertex{
 		{1, 2},
 	}))
 	c.Assert(p.IsConvex(), Equals, false)
-	p = NewService(NewPolygon([]Vertex{
+	p = NewService(NewSlicePolygon([]Vertex{
 		{1, 2},
 		{3, 4},
 	}))
@@ -35,33 +35,33 @@ func (s *PolygonConvexitySuite) TestPolygonsWithOneOrTwoVerticesAreNotConvex(c *
 }
 
 func (s *PolygonConvexitySuite) TestRectangleIsConvex(c *C) {
-	p := NewService(NewPolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
+	p := NewService(NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
 	c.Assert(p.IsConvex(), Equals, true)
 }
 
 func (s *PolygonConvexitySuite) TestTriangleIsConvex(c *C) {
-	p := NewService(NewPolygon([]Vertex{{0, 0}, {10, 0}, {5, 4}}))
+	p := NewService(NewSlicePolygon([]Vertex{{0, 0}, {10, 0}, {5, 4}}))
 	c.Assert(p.IsConvex(), Equals, true)
 }
 
 func (s *PolygonConvexitySuite) TestNotConvex(c *C) {
-	p := NewService(NewPolygon([]Vertex{{0, 0}, {0, 2}, {3, 2}, {1, 1}}))
+	p := NewService(NewSlicePolygon([]Vertex{{0, 0}, {0, 2}, {3, 2}, {1, 1}}))
 	c.Assert(p.IsConvex(), Equals, false)
 }
 
 func (s *PolygonConvexitySuite) TestStraightAngleIsNotConvex(c *C) {
-	p := NewService(NewPolygon([]Vertex{{0, 0}, {1, 0}, {1, 1}, {1, 2}, {0, 2}}))
+	p := NewService(NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {1, 1}, {1, 2}, {0, 2}}))
 	c.Assert(p.IsConvex(), Equals, false)
 }
 
 func (s *PolygonConvexitySuite) TestClockwiseAndCounterclockwiseVertexOrdersAreEqual(c *C) {
-	clockwise := NewService(NewPolygon([]Vertex{{0, 2}, {1, 2}, {1, 0}, {0, 0}}))
-	couterclockwise := NewService(NewPolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
+	clockwise := NewService(NewSlicePolygon([]Vertex{{0, 2}, {1, 2}, {1, 0}, {0, 0}}))
+	couterclockwise := NewService(NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
 	c.Assert(clockwise.IsConvex(), Equals, couterclockwise.IsConvex())
 }
 
 func (s *PolygonConvexitySuite) TestAfterInsert(c *C) {
-	p := NewService(NewPolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
+	p := NewService(NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
 	p.Insert(2, Vertex{3, 1})
 	c.Assert(p.IsConvex(), Equals, true)
 	p.Insert(1, Vertex{-1, 2})
@@ -69,7 +69,7 @@ func (s *PolygonConvexitySuite) TestAfterInsert(c *C) {
 }
 
 func (s *PolygonConvexitySuite) TestAfterSet(c *C) {
-	p := NewService(NewPolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
+	p := NewService(NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
 	p.Set(1, Vertex{2, -1})
 	c.Assert(p.IsConvex(), Equals, true)
 	p.Set(1, Vertex{1, 2})
@@ -77,7 +77,7 @@ func (s *PolygonConvexitySuite) TestAfterSet(c *C) {
 }
 
 func (s *PolygonConvexitySuite) TestAfterDelete(c *C) {
-	p := NewService(NewPolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
+	p := NewService(NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
 	p.Delete(1)
 	c.Assert(p.IsConvex(), Equals, true)
 	p.Delete(0)
@@ -85,7 +85,7 @@ func (s *PolygonConvexitySuite) TestAfterDelete(c *C) {
 }
 
 func (s *PolygonConvexitySuite) TestMirrorRectangle(c *C) {
-	p := NewService(NewPolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
+	p := NewService(NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}}))
 	p.Set(1, Vertex{-1, 0})
 	c.Assert(p.IsConvex(), Equals, false)
 	p.Set(2, Vertex{-1, 2})
@@ -97,7 +97,7 @@ type PolygonEditingSuite struct{
 }
 
 func (s *PolygonEditingSuite) SetUpTest(c *C) {
-	s.p = NewService(NewPolygon([]Vertex{{1, 2}}))
+	s.p = NewService(NewSlicePolygon([]Vertex{{1, 2}}))
 }
 
 func (s *PolygonEditingSuite) TestInsertVertex(c *C) {
@@ -153,25 +153,26 @@ var OutOfBoundsRegex =  `.*out of bounds.*`
 type AngleIteratorSuite struct {}
 
 func (s *AngleIteratorSuite) TestReturnsAngleSign(c *C) {
-	p := NewPolygon([]Vertex{{0, 0}, {1, 0}, {1, 1}})
+	p := NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {1, 1}})
 	c.Assert(NewAngleIterator(p, 0).Sgn(), Equals, 1)
-	p = NewPolygon([]Vertex{{0, 0}, {1, 0}, {-1, -1}})
+	p = NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {-1, -1}})
 	c.Assert(NewAngleIterator(p, 0).Sgn(), Equals, -1)
-	p = NewPolygon([]Vertex{{0, 0}, {1, 0}, {-1, 0}})
+	p = NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {-1, 0}})
 	c.Assert(NewAngleIterator(p, 0).Sgn(), Equals, 0)
 }
 
 func (s *AngleIteratorSuite) TestNextReturnsNextAngle(c *C) {
-	p := NewPolygon([]Vertex{{0, 0}, {1, 0}, {2, -1}})
+	p := NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {2, -1}})
 	c.Assert(NewAngleIterator(p, 0).Next(), DeepEquals, NewAngleIterator(p, 1))
 }
 
 func (s *AngleIteratorSuite) TestHasNextReturnsFalseOnAngleWithCenterOnLastVertex(c *C) {
-	p := NewPolygon([]Vertex{{0, 0}, {1, 0}, {2, -1}})
+	p := NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {2, -1}})
 	c.Assert(NewAngleIterator(p, p.Size()-1).HasNext(), Equals, false)
 }
 
 func (s *AngleIteratorSuite) TestHasNextReturnsTrueOnNonLastVertex(c *C) {
-	p := NewPolygon([]Vertex{{0, 0}, {1, 0}, {2, -1}})
+	p := NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {2, -1}})
 	c.Assert(NewAngleIterator(p, 1).HasNext(), Equals, true)
 }
+
