@@ -1,5 +1,9 @@
 package polygon
 
+func NewSlicePolygon(vertices []Vertex) Polygon {
+	return &slicePolygon{vertices: vertices}
+}
+
 type slicePolygon struct {
 	vertices []Vertex
 }
@@ -23,41 +27,37 @@ func (p slicePolygon) Vertices() []Vertex {
 }
 
 func (p *slicePolygon) Delete(idx int) {
-	if idx < 0 || idx >= p.Size() {
-		return
-	}
 	copy(p.vertices[idx:], p.vertices[idx+1:])
 	p.vertices = p.vertices[:p.Size()-1]
 }
 
 func (p *slicePolygon) Set(idx int, v Vertex) {
-	p.Delete(idx)
-	p.Insert(idx, v)
+	p.vertices[idx] = v
 }
 
-type cyclicVertexIterator struct {
+type sliceCyclicIterator struct {
 	p   slicePolygon
 	idx int
 }
 
 func (p slicePolygon) VertexIterator(idx int) CyclicVertexIterator {
-	return cyclicVertexIterator{
+	return sliceCyclicIterator{
 		p:   p,
 		idx: (idx + p.Size()) % p.Size(),
 	}
 }
 
-func (it cyclicVertexIterator) IsLast() bool {
+func (it sliceCyclicIterator) IsLast() bool {
 	return it.idx == it.p.Size()-1
 }
 
-func (it cyclicVertexIterator) Next() CyclicVertexIterator {
-	return cyclicVertexIterator{
+func (it sliceCyclicIterator) Next() CyclicVertexIterator {
+	return sliceCyclicIterator{
 		p:   it.p,
 		idx: (it.idx+1) % it.p.Size(),
 	}
 }
 
-func (it cyclicVertexIterator) Vertex() Vertex {
+func (it sliceCyclicIterator) Vertex() Vertex {
 	return it.p.vertices[it.idx]
 }

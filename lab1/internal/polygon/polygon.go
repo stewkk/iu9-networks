@@ -10,6 +10,3 @@ type Polygon interface {
 	VertexIterator(idx int) CyclicVertexIterator
 }
 
-func NewSlicePolygon(vertices []Vertex) Polygon {
-	return &slicePolygon{vertices: vertices}
-}
