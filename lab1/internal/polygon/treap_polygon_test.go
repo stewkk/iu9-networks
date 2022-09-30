@@ -4,20 +4,16 @@ import (
 	. "gopkg.in/check.v1"
 )
 
-type TreapGetVertexSuite struct {
-	p Polygon
-}
-
 var (
-	_ = Suite(&TreapGetVertexSuite{})
-	_ = Suite(&TreapInsertVertexSuite{})
-	_ = Suite(&TreapDeleteVertexSuite{})
-	_ = Suite(&TreapSetVertexSuite{})
-	_ = Suite(&TreapPolygonSizeSuite{})
-	_ = Suite(&TreapVertexIteratorSuite{})
+	// _ = Suite(&TreapGetVertexSuite{})
+	// _ = Suite(&TreapInsertVertexSuite{})
+	// _ = Suite(&TreapDeleteVertexSuite{})
+	// _ = Suite(&TreapSetVertexSuite{})
+	// _ = Suite(&TreapPolygonSizeSuite{})
 )
 
-func (s *TreapVertexIteratorSuite) SetUpSuite(c *C) {
+type TreapGetVertexSuite struct {
+	p Polygon
 }
 
 func (s *TreapGetVertexSuite) SetUpTest(c *C) {
@@ -109,39 +105,3 @@ func (s *TreapPolygonSizeSuite) TestNotChangesOnSet(c *C) {
 	c.Assert(s.p.Size(), Equals, 1)
 }
 
-type TreapVertexIteratorSuite struct {
-	p Polygon
-}
-
-func (s *TreapVertexIteratorSuite) SetUpTest(c *C) {
-	s.p = NewTreapPolygon([]Vertex{{1, 2}, {3, 4}, {5, 6}})
-}
-
-func (s *TreapVertexIteratorSuite) TestReturnsVertex(c *C) {
-	c.Assert(s.p.VertexIterator(0).Vertex(), Equals, Vertex{1, 2})
-	c.Assert(s.p.VertexIterator(2).Vertex(), Equals, Vertex{5, 6})
-}
-
-func (s *TreapVertexIteratorSuite) TestIsLastReturnsFalseOnNonLastVertex(c *C) {
-	c.Assert(s.p.VertexIterator(0).IsLast(), Equals, false)
-}
-
-func (s *TreapVertexIteratorSuite) TestIsLastReturnsTrueOnLastVertex(c *C) {
-	c.Assert(s.p.VertexIterator(s.p.Size()-1).IsLast(), Equals, true)
-}
-
-func (s *TreapVertexIteratorSuite) TestNextReturnsIteratorToNextVertex(c *C) {
-	c.Assert(s.p.VertexIterator(0).Next().Vertex(), Equals, s.p.VertexIterator(1).Vertex())
-}
-
-func (s *TreapVertexIteratorSuite) TestNextCyclesToFirstElementAfterLast(c *C) {
-	c.Assert(s.p.VertexIterator(s.p.Size()-1).Next().Vertex(), Equals, s.p.VertexIterator(0).Vertex())
-}
-
-func (s *TreapVertexIteratorSuite) TestInitializesFromNegativeIndex(c *C) {
-	c.Assert(s.p.VertexIterator(-1).Vertex(), Equals, s.p.VertexIterator(s.p.Size()-1).Vertex())
-}
-
-func (s *TreapVertexIteratorSuite) TestInitializesFromIndexGEThanSize(c *C) {
-	c.Assert(s.p.VertexIterator(s.p.Size()).Vertex(), Equals, s.p.VertexIterator(0).Vertex())
-}

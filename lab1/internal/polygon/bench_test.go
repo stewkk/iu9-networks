@@ -12,14 +12,14 @@ func BenchmarkInit(b *testing.B) {
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		NewService(NewSlicePolygon(vertices))
+		NewSlicePolygon(vertices)
 	}
 }
 
 func BenchmarkInsert(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
-		p := NewService(NewSlicePolygon([]Vertex{}))
+		p := NewSlicePolygon([]Vertex{})
 		b.StartTimer()
 		for i := 0; i < 10000; i++ {
 			p.Insert(rand.Intn(i+1), Vertex{i, i})
@@ -35,7 +35,7 @@ func BenchmarkSet(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
-		p := NewService(NewSlicePolygon(vertices))
+		p := NewSlicePolygon(vertices)
 		b.StartTimer()
 		for i := 0; i < len(vertices); i++ {
 			p.Set(rand.Intn(len(vertices)), Vertex{i, 0})
@@ -51,7 +51,7 @@ func BenchmarkDelete(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		b.StopTimer()
-		p := NewService(NewSlicePolygon(vertices))
+		p := NewSlicePolygon(vertices)
 		b.StartTimer()
 		for i := 0; i < len(vertices); i++ {
 			p.Delete(rand.Intn(len(vertices) - i))
@@ -64,11 +64,11 @@ func BenchmarkGet(b *testing.B) {
 	for i := 0; i < 10000; i++ {
 		vertices = append(vertices, Vertex{i, i})
 	}
-	p := NewService(NewSlicePolygon(vertices))
+	p := NewSlicePolygon(vertices)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		for i := 0; i < len(vertices); i++ {
-			p.Get(rand.Intn(len(vertices)))
+			p.Vertex(rand.Intn(len(vertices)))
 		}
 	}
 

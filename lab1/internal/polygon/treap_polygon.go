@@ -15,13 +15,13 @@ type treapPolygon struct {
 	root *node
 }
 
-func (tree *treapPolygon) Delete(idx int) {
+func (tree *treapPolygon) Delete(idx int) error {
 	root := &tree.root
 	for {
 		leftSize := size((*root).left)
 		if idx == leftSize {
 			*root = merge((*root).left, (*root).right)
-			return
+			return nil
 		}
 		(*root).subtreeSize--
 		if idx < leftSize {
@@ -33,19 +33,21 @@ func (tree *treapPolygon) Delete(idx int) {
 	}
 }
 
-func (tree *treapPolygon) Insert(idx int, v Vertex) {
+func (tree *treapPolygon) Insert(idx int, v Vertex) error {
 	newNode := newNode(v)
 	if tree.root == nil {
 		tree.root = newNode
-		return
+		return nil
 	}
 	l, r := split(tree.root, idx)
 	tree.root = merge(l, newNode)
 	tree.root = merge(tree.root, r)
+	return nil
 }
 
-func (tree *treapPolygon) Set(idx int, v Vertex) {
+func (tree *treapPolygon) Set(idx int, v Vertex) error {
 	tree.node(idx).v = v
+	return nil
 }
 
 func (tree *treapPolygon) Size() int {
@@ -57,10 +59,6 @@ func (tree *treapPolygon) Size() int {
 
 func (tree *treapPolygon) Vertex(idx int) Vertex {
 	return tree.node(idx).v
-}
-
-func (*treapPolygon) VertexIterator(idx int) CyclicVertexIterator {
-	return treapCyclicIterator{}
 }
 
 func (tree *treapPolygon) Vertices() (vertices []Vertex) {
@@ -76,6 +74,14 @@ func (tree *treapPolygon) Vertices() (vertices []Vertex) {
 	}
 	recVertices(tree.root)
 	return
+}
+
+func (*treapPolygon) Polyline(from int, to int) []Vertex {
+	return []Vertex{}
+}
+
+func (*treapPolygon) IsConvex() bool {
+	return false
 }
 
 type node struct {
@@ -156,17 +162,10 @@ func merge(l, r *node) *node {
 	}
 }
 
-type treapCyclicIterator struct {
+func (p *treapPolygon) countPolygonAngleSignSum() int {
+	return 0
 }
 
-func (treapCyclicIterator) IsLast() bool {
-	panic("unimplemented")
-}
-
-func (treapCyclicIterator) Next() CyclicVertexIterator {
-	panic("unimplemented")
-}
-
-func (treapCyclicIterator) Vertex() Vertex {
-	panic("unimplemented")
+func (p *treapPolygon) polylineAngleSignSum(from, count int) int {
+	return 0
 }
