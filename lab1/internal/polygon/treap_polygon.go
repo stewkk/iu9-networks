@@ -6,20 +6,21 @@ import (
 )
 
 func NewTreapPolygon(vertices []Vertex) (Polygon, error) {
-	// TODO: построение за O(n)
 	res := treapPolygon{}
 	if len(vertices) < 3 {
 		return &res, fmt.Errorf("%w: can't construct polygon from less than 3 vertices", ErrInvalidOperation)
 	}
-	for i, v := range vertices {
-		res.Insert(i, v)
-	}
+	res.nodes = make([]node, 120000, 120000)
+	res.root = res.build(vertices)
+	res.angleSignSum = countPolygonAngleSignSum(vertices)
 	return &res, nil
 }
 
 type treapPolygon struct {
 	root *node
 	angleSignSum int
+	nodes []node
+	last int
 }
 
 func (tree *treapPolygon) Delete(idx int) error {
@@ -55,7 +56,7 @@ func (tree *treapPolygon) Insert(idx int, v Vertex) error {
 
 	tree.angleSignSum -= polylineAngleSignSum(tree.verticesOfAngles(idx-1, 2))
 
-	newNode := newNode(v)
+	newNode := tree.newNode(v)
 	if tree.root == nil {
 		tree.root = newNode
 		return nil
@@ -117,14 +118,13 @@ type node struct {
 	priority    int
 }
 
-func newNode(v Vertex) *node {
-	return &node{
-		left:        nil,
-		right:       nil,
-		v:           v,
-		subtreeSize: 1,
-		priority:    rand.Int(),
-	}
+func (tree *treapPolygon) newNode(v Vertex) *node {
+	node := &tree.nodes[tree.last]
+	node.priority = rand.Int()
+	node.subtreeSize = 1
+	node.v = v
+	tree.last++
+	return node
 }
 
 func (tree *treapPolygon) node(idx int) *node {
@@ -211,3 +211,31 @@ func (tree *treapPolygon) subset(start, end int) (vertices []Vertex) {
 	tree.root = merge(l, r)
 	return
 }
+
+func (tree *treapPolygon) build(vertices []Vertex) *node {
+	if len(vertices) == 0 {
+		return nil
+	}
+	m := len(vertices) / 2
+	root := tree.newNode(vertices[m])
+	root.left = tree.build(vertices[:m])
+	root.right = tree.build(vertices[m+1:])
+	heapify(root)
+	root.recalcSize()
+	return root
+}
+
+func heapify(root *node) {
+	max := root
+	if root.left != nil && root.left.priority > max.priority {
+		max = root.left
+	}
+	if root.right != nil && root.right.priority > max.priority {
+		max = root.right
+	}
+	if max != root {
+		max.priority, root.priority = root.priority, max.priority
+		heapify(max)
+	}
+}
+
