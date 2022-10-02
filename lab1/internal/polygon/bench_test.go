@@ -21,7 +21,7 @@ func BenchmarkInsert(b *testing.B) {
 		b.StopTimer()
 		p, _ := NewSlicePolygon([]Vertex{{1, 2}, {3, 4}, {5, 6}})
 		b.StartTimer()
-		for i := 0; i < 10000; i++ {
+		for i := 0; i < 100000; i++ {
 			p.Insert(rand.Intn(i+1), Vertex{i, i})
 		}
 	}
@@ -29,7 +29,7 @@ func BenchmarkInsert(b *testing.B) {
 
 func BenchmarkSet(b *testing.B) {
 	vertices := []Vertex{}
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 100000; i++ {
 		vertices = append(vertices, Vertex{i, i})
 	}
 	b.ResetTimer()
@@ -45,7 +45,7 @@ func BenchmarkSet(b *testing.B) {
 
 func BenchmarkDelete(b *testing.B) {
 	vertices := []Vertex{}
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 100000; i++ {
 		vertices = append(vertices, Vertex{i, i})
 	}
 	b.ResetTimer()
@@ -61,7 +61,7 @@ func BenchmarkDelete(b *testing.B) {
 
 func BenchmarkGet(b *testing.B) {
 	vertices := []Vertex{}
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 100000; i++ {
 		vertices = append(vertices, Vertex{i, i})
 	}
 	p, _ := NewSlicePolygon(vertices)

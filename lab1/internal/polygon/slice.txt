@@ -1,0 +1,126 @@
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+OK: 52 passed
+goos: linux
+goarch: amd64
+pkg: github.com/stewkk/iu9-networks/lab1/internal/polygon
+cpu: 11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz
+BenchmarkInit-8     	    5480	    219670 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    4857	    219024 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    4840	    219989 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    5179	    219674 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    4900	    219311 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    4928	    218919 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    5454	    218646 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    4945	    218881 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    5211	    219404 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    5244	    218641 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    4928	    218638 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    4849	    218943 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    5096	    218535 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    5034	    218626 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    5024	    218834 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    4939	    219129 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    5235	    218999 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    4587	    219298 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    5146	    218389 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInit-8     	    5056	    218643 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInsert-8   	       1	1485571284 ns/op	 8933088 B/op	      33 allocs/op
+BenchmarkInsert-8   	       1	1506116917 ns/op	 8933216 B/op	      34 allocs/op
+BenchmarkInsert-8   	       1	1496480708 ns/op	 8933296 B/op	      35 allocs/op
+BenchmarkInsert-8   	       1	1492402373 ns/op	 8932896 B/op	      30 allocs/op
+BenchmarkInsert-8   	       1	1498264145 ns/op	 8933280 B/op	      35 allocs/op
+BenchmarkInsert-8   	       1	1478719651 ns/op	 8933264 B/op	      34 allocs/op
+BenchmarkInsert-8   	       1	1479454960 ns/op	 8933232 B/op	      34 allocs/op
+BenchmarkInsert-8   	       1	1491904309 ns/op	 8933392 B/op	      36 allocs/op
+BenchmarkInsert-8   	       1	1483453238 ns/op	 8933488 B/op	      37 allocs/op
+BenchmarkInsert-8   	       1	1462758901 ns/op	 8933040 B/op	      32 allocs/op
+BenchmarkInsert-8   	       1	1482904113 ns/op	 8933456 B/op	      36 allocs/op
+BenchmarkInsert-8   	       1	1514566197 ns/op	 8933168 B/op	      33 allocs/op
+BenchmarkInsert-8   	       1	1472061313 ns/op	 8933200 B/op	      33 allocs/op
+BenchmarkInsert-8   	       1	1502006151 ns/op	 8933168 B/op	      33 allocs/op
+BenchmarkInsert-8   	       1	1523833237 ns/op	 8932992 B/op	      31 allocs/op
+BenchmarkInsert-8   	       1	1509376519 ns/op	 8933248 B/op	      34 allocs/op
+BenchmarkInsert-8   	       1	1528082295 ns/op	 8933184 B/op	      34 allocs/op
+BenchmarkInsert-8   	       1	1496134378 ns/op	 8933056 B/op	      32 allocs/op
+BenchmarkInsert-8   	       1	1506261054 ns/op	 8932864 B/op	      30 allocs/op
+BenchmarkInsert-8   	       1	1498416865 ns/op	 8933056 B/op	      32 allocs/op
+BenchmarkSet-8      	     380	   3206678 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     384	   3064266 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     384	   3246851 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     384	   3089339 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     379	   3269691 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     360	   3087790 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     368	   3261465 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     363	   3294608 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     364	   3272277 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     381	   3113211 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     380	   3144638 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     368	   3281405 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     356	   3130460 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     364	   3134805 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     375	   3154462 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     376	   3168685 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     363	   3186045 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     375	   3335910 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     356	   3333940 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSet-8      	     381	   3313890 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1424269225 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1425606122 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1423456363 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1385403787 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1458244254 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1444136220 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1450911256 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1453505752 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1409779306 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1459721183 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1443548309 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1441346718 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1472261136 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1416323723 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1436676560 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1458968237 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1480890459 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1454709716 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1452819383 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDelete-8   	       1	1478973042 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     764	   1585597 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     789	   1519368 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     775	   1848807 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     775	   1518401 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     787	   1517115 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     778	   1877995 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     739	   1524421 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     649	   1622993 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     734	   1616180 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     781	   1885769 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     781	   1524621 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     646	   1596862 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     740	   1619433 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     757	   1517954 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     771	   1828171 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     758	   1617637 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     734	   1525546 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     781	   1818333 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     769	   1600903 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGet-8      	     636	   1610276 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/stewkk/iu9-networks/lab1/internal/polygon	146.752s
