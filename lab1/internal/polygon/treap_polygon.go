@@ -10,7 +10,7 @@ func NewTreapPolygon(vertices []Vertex) (Polygon, error) {
 	if len(vertices) < 3 {
 		return &res, fmt.Errorf("%w: can't construct polygon from less than 3 vertices", ErrInvalidOperation)
 	}
-	res.nodes = make([]node, 120000, 120000)
+	res.nodes = make([]node, 120000)
 	res.root = res.build(vertices)
 	res.angleSignSum = countPolygonAngleSignSum(vertices)
 	return &res, nil
@@ -92,7 +92,7 @@ func (tree *treapPolygon) Vertex(idx int) Vertex {
 }
 
 func (tree *treapPolygon) Vertices() (vertices []Vertex) {
-	vertices = []Vertex{}
+	vertices = make([]Vertex, 0, 5)
 	var recVertices func(cur *node)
 	recVertices = func(cur *node) {
 		if cur == nil {
