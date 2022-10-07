@@ -57,10 +57,6 @@ func (tree *treapPolygon) Insert(idx int, v Vertex) error {
 	tree.angleSignSum -= polylineAngleSignSum(tree.verticesOfAngles(idx-1, 2))
 
 	newNode := tree.newNode(v)
-	if tree.root == nil {
-		tree.root = newNode
-		return nil
-	}
 	l, r := split(tree.root, idx)
 	tree.root = merge(l, newNode)
 	tree.root = merge(tree.root, r)
@@ -81,9 +77,6 @@ func (tree *treapPolygon) Set(idx int, v Vertex) error {
 }
 
 func (tree *treapPolygon) Size() int {
-	if tree.root == nil {
-		return 0
-	}
 	return tree.root.subtreeSize
 }
 
