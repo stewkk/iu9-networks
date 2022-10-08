@@ -1,7 +1,8 @@
 package polygon
 
 type Vertex struct {
-	X, Y int
+	X int `json:"x"`
+	Y int `json:"y"`
 }
 
 type Vector Vertex
