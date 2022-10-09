@@ -124,7 +124,7 @@ help - write this message`
 				return err
 			}
 			payload = proto.DeleteVertexRequest{
-				Index:  index,
+				Index: index,
 			}
 		case "convexity":
 		default:

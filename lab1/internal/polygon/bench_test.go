@@ -53,7 +53,7 @@ func BenchmarkDelete(b *testing.B) {
 		b.StopTimer()
 		p, _ := NewTreapPolygon(vertices)
 		b.StartTimer()
-		for i := 0; i < len(vertices) - 5; i++ {
+		for i := 0; i < len(vertices)-5; i++ {
 			p.Delete(rand.Intn(len(vertices) - i))
 		}
 	}

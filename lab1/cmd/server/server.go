@@ -77,7 +77,7 @@ func newClient(conn net.Conn, logger *log.Logger) client {
 		conn:    conn,
 		polygon: polygon,
 		logger:  logger,
-		id: uuid.New(),
+		id:      uuid.New(),
 	}
 }
 
@@ -95,10 +95,10 @@ func (c *client) handleError(err error) {
 }
 
 type client struct {
-	id uuid.UUID
-	conn net.Conn
+	id      uuid.UUID
+	conn    net.Conn
 	polygon polygon.Polygon
-	logger *log.Logger
+	logger  *log.Logger
 }
 
 func (c *client) handleNew(req proto.Request) error {
@@ -168,7 +168,7 @@ func (c *client) handleDelete(req proto.Request) error {
 
 func (c *client) log(args ...any) {
 	prefix := c.logger.Prefix()
-	c.logger.SetPrefix(prefix+" "+c.id.String()+" ")
+	c.logger.SetPrefix(prefix + " " + c.id.String() + " ")
 	c.logger.Print(args...)
 	c.logger.SetPrefix(prefix)
 }

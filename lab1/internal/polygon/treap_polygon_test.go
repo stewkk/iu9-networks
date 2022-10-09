@@ -128,7 +128,7 @@ func (s *TreapPolygonSizeSuite) TestNotChangesOnSet(c *C) {
 	c.Assert(s.p.Size(), Equals, 4)
 }
 
-type TreapConvexitySuite struct {}
+type TreapConvexitySuite struct{}
 
 func (s *TreapConvexitySuite) TestRectangleIsConvex(c *C) {
 	p, _ := NewTreapPolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}})
@@ -194,7 +194,7 @@ func (s *TreapConvexitySuite) TestDeleteAndInsert(c *C) {
 	c.Assert(p.IsConvex(), Equals, true)
 }
 
-type TreapPolygonConstructorSuite struct {}
+type TreapPolygonConstructorSuite struct{}
 
 func (s *TreapPolygonConstructorSuite) TestConstructPolygonFromLessThanThreeVerticesReturnsError(c *C) {
 	_, err := NewTreapPolygon([]Vertex{{1, 2}, {3, 4}})

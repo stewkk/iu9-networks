@@ -24,7 +24,7 @@ func countPolygonAngleSignSum(vertices []Vertex) (sum int) {
 }
 
 func polylineAngleSignSum(vertices []Vertex) (sum int) {
-	for i := 0; i < len(vertices) - 2; i++ {
+	for i := 0; i < len(vertices)-2; i++ {
 		sum += angleSign(vertices[i], vertices[i+1], vertices[i+2])
 	}
 	return

@@ -8,7 +8,7 @@ func NewSlicePolygon(vertices []Vertex) (Polygon, error) {
 }
 
 type slicePolygon struct {
-	vertices []Vertex
+	vertices     []Vertex
 	angleSignSum int
 }
 
@@ -40,10 +40,10 @@ func (p slicePolygon) verticesOfAngles(from int, count int) []Vertex {
 	if from <= 0 {
 		return append(p.vertices[p.Size()+from-1:], p.vertices[:count+from+1]...)
 	}
-	if from + count + 1 > p.Size() {
+	if from+count+1 > p.Size() {
 		return append(p.vertices[from-1:], p.vertices[:count+from-p.Size()+1]...)
 	}
-	return p.vertices[from-1:from+count+1]
+	return p.vertices[from-1 : from+count+1]
 }
 
 func (p *slicePolygon) Delete(idx int) error {
@@ -73,4 +73,3 @@ func (p *slicePolygon) Set(idx int, v Vertex) error {
 func (p *slicePolygon) IsConvex() bool {
 	return p.Size() == abs(p.angleSignSum)
 }
-

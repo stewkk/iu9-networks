@@ -17,10 +17,10 @@ func NewTreapPolygon(vertices []Vertex) (Polygon, error) {
 }
 
 type treapPolygon struct {
-	root *node
+	root         *node
 	angleSignSum int
-	nodes []node
-	last int
+	nodes        []node
+	last         int
 }
 
 func (tree *treapPolygon) Delete(idx int) error {
@@ -186,7 +186,7 @@ func (tree *treapPolygon) verticesOfAngles(from, count int) (vertices []Vertex) 
 		vertices = append(vertices, tree.subset(0, count+from+1)...)
 		return
 	}
-	if from + count + 1 > tree.Size() {
+	if from+count+1 > tree.Size() {
 		vertices = tree.subset(from-1, tree.Size())
 		vertices = append(vertices, tree.subset(0, count+from-tree.Size()+1)...)
 		return
@@ -197,7 +197,7 @@ func (tree *treapPolygon) verticesOfAngles(from, count int) (vertices []Vertex) 
 
 func (tree *treapPolygon) subset(start, end int) (vertices []Vertex) {
 	l, m := split(tree.root, start)
-	m, r := split(m, end - start)
+	m, r := split(m, end-start)
 	tmp := treapPolygon{root: m}
 	vertices = tmp.Vertices()
 	l = merge(l, m)
@@ -231,4 +231,3 @@ func heapify(root *node) {
 		heapify(max)
 	}
 }
-

@@ -15,7 +15,7 @@ func NewVector(s, e Vertex) Vector {
 }
 
 func SinSign(v1, v2 Vector) int {
-	return sgn(v1.X * v2.Y - v2.X * v1.Y)
+	return sgn(v1.X*v2.Y - v2.X*v1.Y)
 }
 
 func angleSign(prev, center, next Vertex) int {

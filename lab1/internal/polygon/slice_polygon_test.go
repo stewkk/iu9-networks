@@ -133,7 +133,7 @@ func (s *SlicePolygonSizeSuite) TestNotChangesOnSet(c *C) {
 	c.Assert(s.p.Size(), Equals, 4)
 }
 
-type SliceConvexitySuite struct {}
+type SliceConvexitySuite struct{}
 
 func (s *SliceConvexitySuite) TestRectangleIsConvex(c *C) {
 	p, _ := NewSlicePolygon([]Vertex{{0, 0}, {1, 0}, {1, 2}, {0, 2}})
@@ -199,7 +199,7 @@ func (s *SliceConvexitySuite) TestDeleteAndInsert(c *C) {
 	c.Assert(p.IsConvex(), Equals, true)
 }
 
-type SlicePolygonConstructorSuite struct {}
+type SlicePolygonConstructorSuite struct{}
 
 func (s *SlicePolygonConstructorSuite) TestConstructPolygonFromLessThanThreeVerticesReturnsError(c *C) {
 	_, err := NewSlicePolygon([]Vertex{{1, 2}, {3, 4}})

@@ -46,7 +46,7 @@ type CreatePolygonRequest struct {
 
 // GenericVertexRequest represents payload for commands related to vertices.
 type GenericVertexRequest struct {
-	Index int `json:"index"`
+	Index  int            `json:"index"`
 	Vertex polygon.Vertex `json:"vertex"`
 }
 
