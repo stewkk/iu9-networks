@@ -64,7 +64,7 @@ type server struct {
 
 func (s *server) interact() error {
 	r := bufio.NewReader(os.Stdin)
-	helpMessage := `Availiable commands:
+	helpMessage := `available commands:
 quit - end connection
 new - use new polygon
 insert - insert vertex
