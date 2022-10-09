@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"os"
@@ -20,6 +21,7 @@ func main() {
 	if err != nil {
 		logger.Fatalln(err)
 	}
+	logger.Println("Server started at 0.0.0.0:8080")
 	for {
 		conn, err := ln.Accept()
 		if err != nil {
@@ -36,6 +38,11 @@ func handle(conn net.Conn, logger *log.Logger) {
 	var req proto.Request
 	for {
 		err := json.NewDecoder(conn).Decode(&req)
+		if err == io.EOF {
+			client.log("Connection interrupted")
+			conn.Close()
+			return
+		}
 		if err != nil {
 			client.handleError(fmt.Errorf("%w: %v", ErrBadRequest, err))
 			continue
@@ -79,9 +86,12 @@ var (
 )
 
 func (c *client) handleError(err error) {
-	proto.MakeResponse(c.conn, "error", proto.ErrorResponse{
+	if err := proto.MakeResponse(c.conn, "error", proto.ErrorResponse{
 		Description: err.Error(),
-	})
+	}); err != nil {
+		c.log(err)
+	}
+	c.log(err)
 }
 
 type client struct {
@@ -102,15 +112,13 @@ func (c *client) handleNew(req proto.Request) error {
 	if err != nil {
 		return err
 	}
-	proto.MakeResponse(c.conn, "ok", nil)
-	return nil
+	return proto.MakeResponse(c.conn, "ok", nil)
 }
 
 func (c *client) handleConvexity(_ proto.Request) error {
-	proto.MakeResponse(c.conn, "result", proto.ConvexityResponse{
+	return proto.MakeResponse(c.conn, "result", proto.ConvexityResponse{
 		IsConvex: c.polygon.IsConvex(),
 	})
-	return nil
 }
 
 func (c *client) handleInsert(req proto.Request) error {
@@ -125,8 +133,7 @@ func (c *client) handleInsert(req proto.Request) error {
 		return err
 	}
 
-	proto.MakeResponse(c.conn, "ok", nil)
-	return nil
+	return proto.MakeResponse(c.conn, "ok", nil)
 }
 
 func (c *client) handleSet(req proto.Request) error {
@@ -141,8 +148,7 @@ func (c *client) handleSet(req proto.Request) error {
 		return err
 	}
 
-	proto.MakeResponse(c.conn, "ok", nil)
-	return nil
+	return proto.MakeResponse(c.conn, "ok", nil)
 }
 
 func (c *client) handleDelete(req proto.Request) error {
@@ -157,12 +163,12 @@ func (c *client) handleDelete(req proto.Request) error {
 		return err
 	}
 
-	proto.MakeResponse(c.conn, "ok", nil)
-	return nil
+	return proto.MakeResponse(c.conn, "ok", nil)
 }
 
 func (c *client) log(args ...any) {
-	c.logger.SetPrefix(c.id.String()+" ")
-	c.logger.Println(args...)
-	c.logger.SetPrefix("")
+	prefix := c.logger.Prefix()
+	c.logger.SetPrefix(prefix+" "+c.id.String()+" ")
+	c.logger.Print(args...)
+	c.logger.SetPrefix(prefix)
 }
