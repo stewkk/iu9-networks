@@ -1,0 +1,14 @@
+Showing nodes accounting for 6740ms, 78.19% of 8620ms total
+Dropped 75 nodes (cum <= 43.10ms)
+Showing top 10 nodes out of 57
+      flat  flat%   sum%        cum   cum%
+    1570ms 18.21% 18.21%     2340ms 27.15%  github.com/stewkk/iu9-networks/lab1/internal/polygon.split
+     990ms 11.48% 29.70%     1220ms 14.15%  github.com/stewkk/iu9-networks/lab1/internal/polygon.merge
+     780ms  9.05% 38.75%     1090ms 12.65%  github.com/stewkk/iu9-networks/lab1/internal/polygon.(*treapPolygon).node
+     730ms  8.47% 47.22%      730ms  8.47%  github.com/stewkk/iu9-networks/lab1/internal/polygon.size (partial-inline)
+     730ms  8.47% 55.68%     1000ms 11.60%  runtime.scanobject
+     610ms  7.08% 62.76%      670ms  7.77%  github.com/stewkk/iu9-networks/lab1/internal/polygon.(*node).recalcSize (partial-inline)
+     450ms  5.22% 67.98%      450ms  5.22%  runtime.memclrNoHeapPointers
+     310ms  3.60% 71.58%      700ms  8.12%  math/rand.(*lockedSource).Int63
+     310ms  3.60% 75.17%      310ms  3.60%  sync.(*Mutex).Unlock (inline)
+     260ms  3.02% 78.19%     1170ms 13.57%  github.com/stewkk/iu9-networks/lab1/internal/polygon.(*treapPolygon).build
