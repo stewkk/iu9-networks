@@ -27,7 +27,7 @@ type HandleConnectionSuite struct {
 
 func (s *HandleConnectionSuite) SetUpTest(c *C) {
 	s.client, s.server = net.Pipe()
-	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+	logger := log.New(os.Stdout, c.TestName(), log.Ldate|log.Ltime)
 	go handle(s.server, logger)
 }
 
@@ -107,6 +107,10 @@ func (s *HandleConnectionSuite) TestInsertsVertex(c *C) {
 	var payload proto.ConvexityResponse
 	json.Unmarshal(*res.Data, &payload)
 	c.Assert(payload.IsConvex, Equals, false)
+}
+
+func (s *HandleConnectionSuite) TestEndsOnConnectionInterruption(c *C) {
+	s.client.Close()
 }
 
 var InvalidOperationRegex = `.*invalid operation on polygon.*`
