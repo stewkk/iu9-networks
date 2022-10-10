@@ -55,7 +55,7 @@ func (s *service) ParseHeadings(page int) ([]Heading, error) {
 					strings.Index(getAttr(c, "class"), "forum-section__item--first") == -1 {
 
 					titleBlock := getChild(getChild(getChild(c, "div", "forum-section__col-2"), "div", "forum-section__title"), "a", "forum-section__title-unlogged")
-					link :=  "https://dota2.ru" + getAttr(titleBlock, "href")
+					link := "https://dota2.ru" + getAttr(titleBlock, "href")
 					title := strings.TrimSpace(titleBlock.FirstChild.Data)
 
 					headings = append(headings, Heading{

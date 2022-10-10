@@ -21,7 +21,7 @@ func RegisterHandlers(mux *httprouter.Router, service Service, logger *log.Logge
 
 type resource struct {
 	service Service
-	logger *log.Logger
+	logger  *log.Logger
 }
 
 func (res *resource) handleGet(w http.ResponseWriter, r *http.Request, p httprouter.Params) error {
