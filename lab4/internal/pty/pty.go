@@ -36,7 +36,7 @@ func ptyMasterOpen() (C.int, error) {
 	return fd, nil
 }
 
-func NewPty(program string, args... string) (io.ReadWriteCloser, error) {
+func NewPty(program string, args ...string) (io.ReadWriteCloser, error) {
 	fd, err := ptyMasterOpen()
 	if err != nil {
 		return nil, err

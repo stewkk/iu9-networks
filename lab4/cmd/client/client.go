@@ -16,9 +16,9 @@ var remoteConfig = &ssh.ClientConfig{
 }
 
 var localConfig = &ssh.ClientConfig{
-	User: "",
+	User: "test",
 	Auth: []ssh.AuthMethod{
-		ssh.Password(""),
+		ssh.Password("12345678"),
 	},
 	HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 }
