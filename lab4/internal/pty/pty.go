@@ -36,7 +36,7 @@ func ptyMasterOpen() (C.int, error) {
 	return fd, nil
 }
 
-func NewPty(program string) (io.ReadWriteCloser, error) {
+func NewPty(program string, args... string) (io.ReadWriteCloser, error) {
 	fd, err := ptyMasterOpen()
 	if err != nil {
 		return nil, err
@@ -77,6 +77,6 @@ func NewPty(program string) (io.ReadWriteCloser, error) {
 	if slaveFile.Fd() > os.Stderr.Fd() {
 		slaveFile.Close()
 	}
-	unix.Exec(program, nil, nil)
+	unix.Exec(program, args, nil)
 	return nil, nil
 }

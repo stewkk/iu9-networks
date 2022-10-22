@@ -1,26 +1,28 @@
 package main
 
 import (
+	"fmt"
 	"io"
-	"os"
+	"log"
 
+	"github.com/gliderlabs/ssh"
 	"github.com/stewkk/iu9-networks/lab4/internal/pty"
-	"golang.org/x/term"
 )
 
 func main() {
-	rw, err := pty.NewPty("/bin/bash")
-	if err != nil {
-		panic(err)
-	}
-	defer rw.Close()
-	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
-	if err != nil {
-		panic(err)
-	}
-	defer term.Restore(int(os.Stdin.Fd()), oldState)
-	go func() {
-		io.Copy(rw, os.Stdout)
-	}()
-	io.Copy(os.Stdin, rw)
+	ssh.Handle(func(s ssh.Session) {
+		io.WriteString(s, fmt.Sprintf("Hello %s\n", s.User()))
+		rw, err := pty.NewPty("/bin/su", "-", s.User())
+		if err != nil {
+			panic(err)
+		}
+		defer rw.Close()
+		go func() {
+			io.Copy(rw, s)
+		}()
+		io.Copy(s, rw)
+	})
+
+	log.Println("starting ssh server on port 2222...")
+	log.Fatal(ssh.ListenAndServe(":2222", nil))
 }
