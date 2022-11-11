@@ -3,16 +3,20 @@ project(beer-paint CXX)
 
 include(GNUInstallDirs)
 
+set (CMAKE_CXX_STANDARD 20)
 
-set(BOOST_URL https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/boost_1_80_0.7z)
-set(BOOST_URL_SHA256 d12a2af721e22dbfb984ef061ee4c4ab2387f1904f6d65bc5acebaa34d6366ec)
-add_subdirectory(boost-cmake)
+find_package(Boost 1.76 REQUIRED COMPONENTS coroutine)
+include_directories(${Boost_INCLUDE_DIR})
+
+find_package(PkgConfig)
+pkg_check_modules(GTKMM gtkmm-4.0)
+include_directories(${GTKMM_INCLUDE_DIRS})
 
 # Common sources
 add_library(${PROJECT_NAME}_objs OBJECT
-  src/painting/model.hpp
+  src/tmp.hpp
 )
-target_link_libraries(${PROJECT_NAME}_objs PUBLIC Boost::coroutine)
+target_link_libraries(${PROJECT_NAME}_objs PUBLIC ${Boost_LIBRARIES} ${GTKMM_LIBRARIES})
 
 
 # The Service

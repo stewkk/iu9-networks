@@ -1,3 +1,6 @@
 [submodule "lab3.2/boost-cmake"]
 	path = lab3.2/boost-cmake
 	url = https://github.com/Orphis/boost-cmake.git
+[submodule "lab3.2/goocanvas"]
+	path = lab3.2/goocanvas
+	url = https://gitlab.gnome.org/GNOME/goocanvas.git

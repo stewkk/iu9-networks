@@ -1,7 +1,7 @@
 #include <boost/asio.hpp>
 #include <boost/asio/spawn.hpp>
 
-#include <iostream>
+#include <thread>
 
 namespace net = boost::asio;
 using tcp = net::ip::tcp;
@@ -47,9 +47,10 @@ void do_accept(net::yield_context yield, net::io_context& ioc) {
     }
 }
 
-std::int32_t main() {
+std::int32_t main(int argc, char* argv[]) {
     net::io_context ioc;
     net::spawn(ioc, std::bind(do_accept, std::placeholders::_1, std::ref(ioc)));
+
     ioc.run();
     return 0;
 }

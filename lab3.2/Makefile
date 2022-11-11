@@ -28,6 +28,11 @@ build-impl-%: build_%/Makefile
 service-impl-start-%: build-impl-%
 	@cd ./build_$* && ./beer-paint
 
+# test
+test-impl-%: build-impl-%
+	@pytest
+	@pep8 tests
+
 # clean
 clean-impl-%:
 	cd build_$* && $(MAKE) clean
