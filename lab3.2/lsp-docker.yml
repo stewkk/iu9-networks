@@ -1,0 +1,16 @@
+lsp:
+  server:
+    type: docker
+    subtype: image
+    name: iu9-networks:latest
+    server: gopls
+    launch_command: "gopls"
+  mappings:
+    - source: "."
+      destination: "/service"
+    - source: "./.cache/go"
+      destination: "/go"
+    - source: "./.cache/go-build"
+      destination: "/root/.cache/go-build"
+    - source: "./.cache/ci-cache"
+      destination: "/root/.cache/golangci-lint"
