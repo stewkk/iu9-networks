@@ -8,8 +8,8 @@ lsp:
   mappings:
     - source: "."
       destination: "/service"
-    - source: "./.cache/go"
-      destination: "/go"
+    - source: "./.cache/go/mod"
+      destination: "/go/mod"
     - source: "./.cache/go-build"
       destination: "/root/.cache/go-build"
     - source: "./.cache/ci-cache"
