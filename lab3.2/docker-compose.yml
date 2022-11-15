@@ -8,7 +8,7 @@ services:
       network_mode: host
       volumes:
         - .:/service:rw
-        - .cache/go:/go
+        - .cache/go/mod:/go/mod
         - .cache/go-build:/root/.cache/go-build
         - .cache/ci-cache:/root/.cache/golangci-lint
         - /var/run/docker.sock:/var/run/docker.sock
