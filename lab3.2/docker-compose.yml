@@ -2,8 +2,8 @@ version: "3.1"
 
 services:
     dev:
-      build:
-        context: ./../
+      build: ..
+      image: iu9-networks:latest
       privileged: true
       network_mode: host
       volumes:

@@ -11,7 +11,7 @@ type ExampleTestSuite struct {
 }
 
 func (suite *ExampleTestSuite) TestExample() {
-	require.Equal(suite.T(), 3, sum(1, 2))
+	require.Equal(suite.T(), 3, Sum(1, 2))
 }
 
 func TestExampleTestSuite(t *testing.T) {
