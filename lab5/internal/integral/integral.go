@@ -19,6 +19,9 @@ func (i *Integral) Calc() float64 {
 func (integral *Integral) calcSum(steps int) float64 {
 	var sum float64
 	step := integral.size() / float64(steps)
+	if integral.Start > integral.End {
+		step = -step
+	}
 	x := integral.Start + step/2
 	for i := 0; i < steps; i++ {
 		sum += integral.Polynom.calc(x) * step

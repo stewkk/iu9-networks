@@ -75,6 +75,22 @@ func (suite *IntegralTestSuite) TestZeroRangeYieldsZero() {
 	require.InDelta(suite.T(), 0.0, integral.Calc(), eps)
 }
 
+func (suite *IntegralTestSuite) TestNegativeRange() {
+	integral := Integral{
+		Polynom: Polynom{
+			A: 0,
+			B: 1,
+			C: 0,
+		},
+		Range: Range{
+			Start: 1,
+			End:   0,
+		},
+	}
+
+	require.InDelta(suite.T(), -0.5, integral.Calc(), eps)
+}
+
 func TestExampleTestSuite(t *testing.T) {
 	suite.Run(t, new(IntegralTestSuite))
 }
