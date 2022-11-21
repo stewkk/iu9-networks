@@ -4,7 +4,7 @@ all:
 
 .PHONY: test
 test: test-fast build
-	@cd tests && pytest
+	@cd tests && pytest --verbose
 
 .PHONY: test-fast
 test-fast:
@@ -12,7 +12,7 @@ test-fast:
 
 .PHONY: build
 build:
-	@go build -o lab5 cmd/lab5/lab5.go
+	@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o lab5 cmd/lab5/lab5.go
 
 # Start targets makefile in docker environment
 docker-impl-%:
