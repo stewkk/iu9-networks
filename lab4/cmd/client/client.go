@@ -8,23 +8,13 @@ import (
 	"golang.org/x/term"
 )
 
-var remoteConfig = &ssh.ClientConfig{
-	User:            "test",
-	HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-}
-
-var localConfig = &ssh.ClientConfig{
-	User:            "test",
-	HostKeyCallback: ssh.InsecureIgnoreHostKey(),
-}
-
 var (
 	remote = ""
 	local  = "localhost:2222"
 )
 
 func main() {
-	client, err := sshclient.DialWithPasswd(local, localConfig.User, "12345678")
+	client, err := sshclient.DialWithPasswd(local, "test", "12345678")
 	if err != nil {
 		panic(err)
 	}
