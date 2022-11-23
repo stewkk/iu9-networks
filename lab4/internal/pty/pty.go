@@ -27,11 +27,6 @@ func NewPty() (*os.File, string, error) {
 		return nil, "", err
 	}
 
-	// err = ttySetRaw(master)
-	// if err != nil {
-	// 	return nil, "", err
-	// }
-
 	return master, slave, nil
 }
 

@@ -14,7 +14,7 @@ import (
 
 func RunServer() {
 	server := http.Server{
-		Addr: "0.0.0.0:5332",
+		Addr:    "0.0.0.0:5332",
 		Handler: http.HandlerFunc(handler),
 	}
 

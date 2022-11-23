@@ -1,7 +1,6 @@
 package pty
 
 import (
-	"fmt"
 	"io"
 	"testing"
 
@@ -16,14 +15,10 @@ type PtySuite struct{}
 var _ = Suite(&PtySuite{})
 
 func (s *PtySuite) TestRunsEchoCommand(c *C) {
-	rw, err := ExecWithPty("/bin/bash")
-	c.Assert(err, IsNil)
+	rw, _ := ExecWithPty("/bin/bash")
 	io.WriteString(rw, `echo "aboba"
 exit
 `)
 	str, _ := io.ReadAll(rw)
-	fmt.Println("=========")
-	fmt.Println(string(str))
-	fmt.Println("=========")
 	c.Assert(len(string(str)), Not(Equals), 0)
 }
