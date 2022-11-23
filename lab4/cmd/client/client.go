@@ -1,57 +1,54 @@
 package main
 
 import (
-	"io"
 	"os"
 
+	"github.com/helloyi/go-sshclient"
 	"golang.org/x/crypto/ssh"
+	"golang.org/x/term"
 )
 
 var remoteConfig = &ssh.ClientConfig{
-	User: "test",
-	Auth: []ssh.AuthMethod{
-		ssh.Password(""),
-	},
+	User:            "test",
 	HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 }
 
 var localConfig = &ssh.ClientConfig{
-	User: "test",
-	Auth: []ssh.AuthMethod{
-		ssh.Password("12345678"),
-	},
+	User:            "test",
 	HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 }
 
 var (
 	remote = ""
-	local = "localhost:2222"
+	local  = "localhost:2222"
 )
 
 func main() {
-	client, err := ssh.Dial("tcp", local, localConfig)
-	if err != nil {
-		panic(err)
-	}
-	defer client.Close()
-
-	session, err := client.NewSession()
-	if err != nil {
-		panic(err)
-	}
-	defer session.Close()
-
-	session.Stdout = os.Stdout
-	session.Stderr = os.Stderr
-	stdin, err := session.StdinPipe()
+	client, err := sshclient.DialWithPasswd(local, localConfig.User, "12345678")
 	if err != nil {
 		panic(err)
 	}
 
-	err = session.Shell()
+	// with a terminal config
+	config := &sshclient.TerminalConfig{
+		Term:   "xterm",
+		Height: 40,
+		Weight: 80,
+		Modes: ssh.TerminalModes{
+			ssh.TTY_OP_ISPEED: 14400, // input speed = 14.4kbaud
+			ssh.TTY_OP_OSPEED: 14400, // output speed = 14.4kbaud
+		},
+	}
+
+	// Set stdin in raw mode.
+	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
 	if err != nil {
 		panic(err)
 	}
+	defer func() { _ = term.Restore(int(os.Stdin.Fd()), oldState) }() // Best effort.
 
-	io.Copy(stdin, os.Stdin)
+	err = client.Terminal(config).Start()
+	if err != nil {
+		panic(err)
+	}
 }

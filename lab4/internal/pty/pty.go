@@ -1,82 +1,107 @@
 package pty
 
 import (
-	/*
-	   #define _XOPEN_SOURCE 600
-	   #include <fcntl.h>
-	   #include <stdlib.h>
-	   #include <unistd.h>
-	*/
-	"C"
-)
-
-import (
 	"fmt"
 	"io"
 	"os"
-	"runtime"
+	"os/exec"
+	"syscall"
+	"unsafe"
 
 	"golang.org/x/sys/unix"
 )
 
-func init() {
-	runtime.LockOSThread()
+func NewPty() (*os.File, string, error) {
+	master, err := os.OpenFile("/dev/ptmx", syscall.O_RDWR|syscall.O_NOCTTY|syscall.O_CLOEXEC, 0)
+	if err != nil {
+		return nil, "", err
+	}
+
+	err = unlockpt(master)
+	if err != nil {
+		return nil, "", err
+	}
+
+	slave, err := ptsname(master)
+	if err != nil {
+		return nil, "", err
+	}
+
+	// err = ttySetRaw(master)
+	// if err != nil {
+	// 	return nil, "", err
+	// }
+
+	return master, slave, nil
 }
 
-func ptyMasterOpen() (C.int, error) {
-	fd, err := C.posix_openpt(C.O_RDWR | C.O_NOCTTY)
+func ExecWithPty(command string, args ...string) (io.ReadWriteCloser, error) {
+	master, slaveName, err := NewPty()
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	res := C.unlockpt(fd)
-	if res == -1 {
-		return 0, fmt.Errorf("failed")
+	slave, err := os.OpenFile(slaveName, syscall.O_RDWR, 0)
+	if err != nil {
+		return nil, err
 	}
-	return fd, nil
+	defer slave.Close()
+
+	cmd := exec.Command(command, args...)
+	cmd.Stdin = slave
+	cmd.Stdout = slave
+	cmd.Stderr = slave
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		Setctty: true,
+		Setsid:  true,
+	}
+	err = cmd.Start()
+	if err != nil {
+		return nil, err
+	}
+
+	return master, nil
 }
 
-func NewPty(program string, args ...string) (io.ReadWriteCloser, error) {
-	fd, err := ptyMasterOpen()
+func ioctl(fd, flag, data uintptr) error {
+	if _, _, err := syscall.Syscall(syscall.SYS_IOCTL, fd, flag, data); err != 0 {
+		return err
+	}
+	return nil
+}
+
+func unlockpt(f *os.File) error {
+	var data int32
+	return ioctl(f.Fd(), syscall.TIOCSPTLCK, uintptr(unsafe.Pointer(&data)))
+}
+
+func ptsname(f *os.File) (string, error) {
+	var pty int32
+	err := ioctl(f.Fd(), syscall.TIOCGPTN, uintptr(unsafe.Pointer(&pty)))
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	slave := C.ptsname(fd)
-	if slave == nil {
-		return nil, fmt.Errorf("failed to get ptsname")
-	}
-	childPid := C.fork()
-	if childPid == -1 {
-		return nil, fmt.Errorf("failed to fork")
-	}
-	if childPid != 0 { // parent
-		return os.NewFile(uintptr(fd), C.GoString(slave)), nil
-	}
-	// child
-	_, err = unix.Setsid()
+	return fmt.Sprintf("/dev/pts/%v", pty), nil
+}
+
+func ttySetRaw(f *os.File) error {
+	termios, err := unix.IoctlGetTermios(int(f.Fd()), unix.TCGETS)
 	if err != nil {
-		os.Exit(1)
+		return err
 	}
-	C.close(fd)
-	slaveFile, err := os.OpenFile(C.GoString(slave), os.O_RDWR, 075)
+
+	termios.Iflag &^= unix.IGNBRK | unix.BRKINT | unix.PARMRK | unix.ISTRIP | unix.INLCR | unix.IGNCR | unix.ICRNL | unix.IXON
+	termios.Oflag &^= unix.OPOST
+	termios.Lflag &^= unix.ECHO | unix.ECHONL | unix.ICANON | unix.ISIG | unix.IEXTEN
+	termios.Cflag &^= unix.CSIZE | unix.PARENB
+	termios.Cflag |= unix.CS8
+	termios.Cc[unix.VMIN] = 1
+	termios.Cc[unix.VTIME] = 0
+
+	err = unix.IoctlSetTermios(int(f.Fd()), unix.TCSETS, termios)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = unix.Dup2(int(slaveFile.Fd()), int(os.Stdin.Fd()))
-	if err != nil {
-		return nil, err
-	}
-	err = unix.Dup2(int(slaveFile.Fd()), int(os.Stdout.Fd()))
-	if err != nil {
-		return nil, err
-	}
-	err = unix.Dup2(int(slaveFile.Fd()), int(os.Stderr.Fd()))
-	if err != nil {
-		return nil, err
-	}
-	if slaveFile.Fd() > os.Stderr.Fd() {
-		slaveFile.Close()
-	}
-	unix.Exec(program, args, nil)
-	return nil, nil
+
+	return nil
 }
