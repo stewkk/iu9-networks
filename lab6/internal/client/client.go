@@ -63,16 +63,12 @@ func (c *Client) Remove(path string) error {
 }
 
 func (c *Client) Ls(path string) error {
-	entries, err := c.conn.List(path)
+	entries, err := c.conn.NameList(path)
 	if err != nil {
 		return err
 	}
 	for _, entry := range entries {
-		if entry.Type == ftp.EntryTypeFolder {
-			fmt.Printf("%s/\n", entry.Name)
-		} else {
-			fmt.Println(entry.Name)
-		}
+		fmt.Println(entry)
 	}
 	return nil
 }
