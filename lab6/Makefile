@@ -5,4 +5,10 @@ all:
 server:
 	go run cmd/server/server.go
 
-.PHONY: all server
+rss:
+	go run cmd/rss-client/rss-client.go
+
+list:
+	cat tmp/rss/* | jq '.[] .Id'
+
+.PHONY: all server rss

@@ -1,6 +1,6 @@
 module github.com/stewkk/iu9-networks/lab3
 
-go 1.18
+go 1.19
 
 require (
 	github.com/SlyMarbo/rss v1.0.5

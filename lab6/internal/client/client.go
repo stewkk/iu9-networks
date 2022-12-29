@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path"
@@ -15,7 +16,7 @@ type Client struct {
 }
 
 func NewClient() (Client, error) {
-	conn, err := ftp.Dial(os.Getenv("HOST"), ftp.DialWithTimeout(5*time.Second))
+	conn, err := ftp.Dial(os.Getenv("HOST"), ftp.DialWithTimeout(5*time.Second), ftp.DialWithDisabledEPSV(false))
 	if err != nil {
 		return Client{}, err
 	}
@@ -63,7 +64,7 @@ func (c *Client) Remove(path string) error {
 }
 
 func (c *Client) Ls(path string) error {
-	entries, err := c.conn.NameList(path)
+	entries, err := c.Nlist(path)
 	if err != nil {
 		return err
 	}
@@ -71,4 +72,20 @@ func (c *Client) Ls(path string) error {
 		fmt.Println(entry)
 	}
 	return nil
+}
+
+func (c *Client) Nlist(path string) ([]string, error) {
+	return c.conn.NameList(path)
+}
+
+func (c *Client) Read(path string) (io.ReadCloser, error) {
+	return c.conn.Retr(path)
+}
+
+func (c *Client) Load(data io.Reader, path string) error {
+	return c.conn.Stor(path, data)
+}
+
+func (c *Client) Cwd(path string) error {
+	return c.conn.ChangeDir(path)
 }
