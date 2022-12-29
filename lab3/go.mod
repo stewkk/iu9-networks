@@ -2,6 +2,10 @@ module github.com/stewkk/iu9-networks/lab3
 
 go 1.18
 
+replace (
+	github.com/stewkk/iu9-networks/lab3/kommersant => ./pkg/kommersant
+)
+
 require (
 	github.com/SlyMarbo/rss v1.0.5
 	github.com/go-sql-driver/mysql v1.6.0
