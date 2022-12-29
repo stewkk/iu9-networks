@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stewkk/iu9-networks/lab3/internal/kommersant"
+	"github.com/stewkk/iu9-networks/lab3/pkg/kommersant"
 )
 
 func main() {
