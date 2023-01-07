@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Генератор отчетов</title>
+  </head>
+  <body>
+    <form action="/" method="post">
+      <label for="worktype">Тип работы:</label><br>
+      <input type="text" id="worktype"><br>
+      <label for="title">Название:</label><br>
+      <input type="text" id="title"><br>
+      <label for="author">Автор:</label><br>
+      <input type="text" id="author"><br>
+      <label for="teacher">Преподаватель:</label><br>
+      <input type="text" id="teacher"><br>
+      <label for="group">Группа:</label><br>
+      <input type="text" id="group"><br>
+      <label for="course">Курс:</label><br>
+      <input type="text" id="course"><br>
+      <label for="number">Номер:</label><br>
+      <input type="text" id="number">
+      <input type="submit" value="Submit">
+    </form>
+    <textarea></textarea>
+    <script src="https://cdn.jsdelivr.net/highlight.js/latest/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/highlight.js/latest/styles/github.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script>
+      var simplemde = new SimpleMDE({
+          renderingConfig: {
+              codeSyntaxHighlighting: true,
+          },
+      });
+    </script>
+  </body>
+</html>
