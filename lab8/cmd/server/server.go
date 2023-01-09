@@ -13,19 +13,41 @@ import (
 	"github.com/google/uuid"
 	"github.com/julienschmidt/httprouter"
 	"github.com/stewkk/iu9-networks/lab8/pkg/reports"
+	"goftp.io/server/v2"
+	"goftp.io/server/v2/driver/file"
 )
 
 func main() {
 	root := os.Getenv("LAB8_ROOT")
 
-	server, err := NewServer(root)
+	httpServer, err := NewServer(root)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	router := httprouter.New()
-    router.GET("/*filepath", server.HandleGet)
-    router.POST("/", server.HandlePost)
+    router.GET("/*filepath", httpServer.HandleGet)
+    router.POST("/", httpServer.HandlePost)
+
+	driver, err := file.NewDriver(root)
+	auth := &server.SimpleAuth{
+		Name:     os.Getenv("LOGIN"),
+		Password: os.Getenv("PASSWD"),
+	}
+	perm := &server.SimplePerm{}
+	opts := &server.Options{
+		Driver: driver,
+		Auth: auth,
+		Port: 2000,
+		Perm: perm,
+		Hostname: "0.0.0.0",
+	}
+	server, err  := server.NewServer(opts)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	go server.ListenAndServe()
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

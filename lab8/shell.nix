@@ -4,7 +4,7 @@ let
   tex = (pkgs.texlive.combine {
     inherit (pkgs.texlive) scheme-medium
       wrapfig amsmath ulem hyperref capt-of csquotes fvextra
-      upquote datetime fmtcount
+      upquote
       collection-langcyrillic cm-super babel-russian cyrillic;
   });
 in

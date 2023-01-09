@@ -18,8 +18,6 @@
 \RequirePackage{graphicx}
 \setkeys{Gin}{width=\textwidth}
 
-\RequirePackage{datetime}
-
 \lstset{
   columns=fullflexible,
   frame=single,
