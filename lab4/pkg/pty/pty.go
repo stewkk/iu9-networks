@@ -30,10 +30,17 @@ func NewPty() (*os.File, string, error) {
 	return master, slave, nil
 }
 
-func ExecWithPty(command string, args ...string) (io.ReadWriteCloser, error) {
+func ExecWithPty(command string, bool raw, args ...string) (io.ReadWriteCloser, error) {
 	master, slaveName, err := NewPty()
 	if err != nil {
 		return nil, err
+	}
+
+	if raw {
+		err = ttySetRaw(master)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	slave, err := os.OpenFile(slaveName, syscall.O_RDWR, 0)

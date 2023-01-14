@@ -15,7 +15,7 @@ func main() {
 	})
 	ssh.Handle(func(s ssh.Session) {
 		io.WriteString(s, fmt.Sprintf("Hello %s\n", s.User()))
-		rw, err := pty.ExecWithPty("/bin/sudo", "--login", "--user", s.User())
+		rw, err := pty.ExecWithPty("/bin/sudo", false, "--login", "--user", s.User())
 		if err != nil {
 			panic(err)
 		}
