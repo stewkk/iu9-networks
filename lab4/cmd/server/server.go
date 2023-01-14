@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/gliderlabs/ssh"
-	"github.com/stewkk/iu9-networks/lab4/internal/pty"
+	"github.com/stewkk/iu9-networks/lab4/pkg/pty"
 )
 
 func main() {
