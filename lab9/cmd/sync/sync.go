@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	tmpl, err := template.New("index").ParseFiles("html/index.html")
+	tmpl, err := template.New("index").ParseFiles("html/sync.html")
 	if err != nil {
 		log.Fatal(err)
 	}
