@@ -58,3 +58,8 @@ description text CHARACTER SET utf8mb4
 
 	return nil
 }
+
+func Clear() error {
+	_, err := db.Exec(`TRUNCATE TABLE ihatemysql`)
+	return err
+}
