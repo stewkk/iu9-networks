@@ -6,6 +6,9 @@ pkgs.mkShell {
     pkgs.gopls
     pkgs.delve
     pkgs.python311
+    pkgs.libcap
+    pkgs.gcc
+    pkgs.linux-pam
 
     # keep this line if you use bash
     pkgs.bashInteractive
@@ -16,6 +19,6 @@ pkgs.mkShell {
     source ${./.env}
     set +a
 
-    export CGO_ENABLED=0
+    export CGO_ENABLED=1
   '';
 }

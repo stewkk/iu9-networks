@@ -7,4 +7,7 @@ sync:
 async:
 	go run cmd/async/async.go
 
-.PHONY: all sync async
+auth:
+	go build -tags pam cmd/auth/auth.go && sudo ./auth
+
+.PHONY: all sync async auth
