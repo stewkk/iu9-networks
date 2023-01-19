@@ -28,8 +28,6 @@ func Store(news []NewsEntry) error {
 		return err
 	}
 
-	db.Exec(`DROP TABLE ihatemysql;`)
-
 	_, err = db.Exec(`
 CREATE TABLE IF NOT EXISTS ihatemysql(
 id varchar(300) PRIMARY KEY,
@@ -60,6 +58,36 @@ description text CHARACTER SET utf8mb4
 }
 
 func Clear() error {
-	_, err := db.Exec(`TRUNCATE TABLE ihatemysql`)
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s", DbUsername, DbPassword, DbAddress, DbName))
+	if err != nil {
+		return err
+	}
+	_, err = db.Exec(`TRUNCATE TABLE ihatemysql`)
 	return err
+}
+
+func List() ([]NewsEntry, error) {
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s)/%s", DbUsername, DbPassword, DbAddress, DbName))
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := db.Query("SELECT * FROM ihatemysql")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	res := make([]NewsEntry, 0)
+	for rows.Next() {
+		var entry NewsEntry
+		if err := rows.Scan(&entry); err != nil {
+			return nil, err
+		}
+		res = append(res, entry)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return res, err
 }
